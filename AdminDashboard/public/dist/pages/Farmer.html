@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Cooking Oil Supply System | Farmer Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="title" content="Cooking Oil Supply System | Farmer Dashboard" />
+    <meta name="author" content="Cooking Oil Supply System" />
+    <meta name="description" content="Dashboard for farmers in the cooking oil supply chain management system." />
+    <meta name="keywords" content="cooking oil, supply chain, farmer dashboard, agriculture, palm oil, sunflower oil" />
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css" integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous" />
+
+    <!-- Third Party Plugins -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/styles/overlayscrollbars.min.css" integrity="sha256-tZHrRjVqNSRyWg2wbppGnT833E/Ys0DHWGwT04GiqQg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" integrity="sha256-9kPW/n5nn53j4WMRYAxe9c1rCY96Oogo/MKSVdKzPmI=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../../dist/css/adminlte.css" />
+
+    <!-- Apex Charts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css" integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0=" crossorigin="anonymous" />
+
+    <!-- Custom CSS for Farmer Dashboard -->
+    <style>
+        .crop-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .harvest-progress {
+            height: 10px;
+            border-radius: 5px;
+        }
+        
+        .weather-card {
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .soil-card {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF0000 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .market-card {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .payment-card {
+            background: linear-gradient(135deg, #a6c0fe 0%, #f68084 100%);
+            color: white;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+    <!--begin::App Wrapper-->
+    <div class="app-wrapper">
+        <!--begin::Header-->
+        <nav class="app-header navbar navbar-expand bg-body">
+            <div class="container-fluid">
+                <!--begin::Start Navbar Links-->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button">
+                            <i class="bi bi-list"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
+                    <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Support</a></li>
+                </ul>
+
+                <!--begin::End Navbar Links-->
+                <ul class="navbar-nav ms-auto">
+                    <!-- Weather Alert -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="bi bi-cloud-lightning-rain-fill text-warning"></i>
+                            <span class="navbar-badge badge text-bg-warning">1</span>
+                        </a>
+                    </li>
+
+                    <!-- Messages -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-bs-toggle="dropdown" href="#">
+                            <i class="bi bi-envelope-fill"></i>
+                            <span class="navbar-badge badge text-bg-success">2</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <h3 class="dropdown-item-title">
+                                            New Contract Offer
+                                            <span class="float-end fs-7 text-secondary">
+                          <i class="bi bi-clock-fill me-1"></i> 2 Hours Ago
+                        </span>
+                                        </h3>
+                                        <p class="fs-7">You have a new contract offer from Golden Oil Co.</p>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <h3 class="dropdown-item-title">
+                                            Payment Received
+                                            <span class="float-end fs-7 text-secondary">
+                          <i class="bi bi-clock-fill me-1"></i> 1 Day Ago
+                        </span>
+                                        </h3>
+                                        <p class="fs-7">Your payment for last month's harvest has been processed.</p>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                        </div>
+                    </li>
+
+                    <!-- User Menu -->
+                    <li class="nav-item dropdown user-menu">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img src="../../dist/assets/img/farmer-avatar.jpg" class="user-image rounded-circle shadow" alt="Farmer Image" />
+                            <span class="d-none d-md-inline">John Farmer</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                            <li class="user-header text-bg-success">
+                                <img src="../../dist/assets/img/farmer-avatar.jpg" class="rounded-circle shadow" alt="Farmer Image" />
+                                <p>
+                                    John Farmer - Oil Palm Grower
+                                    <small>Member since Jan 2020</small>
+                                </p>
+                            </li>
+                            <li class="user-body">
+                                <div class="row">
+                                    <div class="col-4 text-center"><a href="#">Farm</a></div>
+                                    <div class="col-4 text-center"><a href="#">Contracts</a></div>
+                                    <div class="col-4 text-center"><a href="#">Payments</a></div>
+                                </div>
+                            </li>
+                            <li class="user-footer">
+                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <a href="#" class="btn btn-default btn-flat float-end">Sign out</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!--end::Header-->
+
+        <!--begin::Sidebar-->
+        <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+            <div class="sidebar-brand">
+                <a href="./index.html" class="brand-link">
+                    <img src="../../dist/assets/img/oil-logo.png" alt="Cooking Oil Logo" class="brand-image opacity-75 shadow" />
+                    <span class="brand-text fw-light">Oil Farmer</span>
+                </a>
+            </div>
+
+            <div class="sidebar-wrapper">
+                <nav class="mt-2">
+                    <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon bi bi-speedometer"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-tree-fill"></i>
+                                <p>
+                                    My Farms
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="./farms/list.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>All Farms</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./farms/add.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Add New Farm</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./farms/map.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Farm Map</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-calendar-check-fill"></i>
+                                <p>
+                                    Harvests
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="./harvests/upcoming.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Upcoming</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./harvests/history.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>History</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./harvests/schedule.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Schedule</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-file-earmark-text-fill"></i>
+                                <p>
+                                    Contracts
+                                    <span class="nav-badge badge text-bg-primary me-3">2</span>
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="./contracts/active.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Active Contracts</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./contracts/pending.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Pending Offers</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./contracts/history.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Contract History</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-cash-coin"></i>
+                                <p>
+                                    Payments
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="./payments/expected.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Expected</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./payments/received.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Received</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./payments/statements.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Statements</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-graph-up-arrow"></i>
+                                <p>
+                                    Market Data
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="./market/prices.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Price Trends</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./market/demand.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Demand Forecast</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-cloud-sun-fill"></i>
+                                <p>
+                                    Weather
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="./weather/forecast.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Forecast</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./weather/alerts.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Alerts</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-book-fill"></i>
+                                <p>
+                                    Resources
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="./resources/guides.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Farming Guides</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./resources/training.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Training</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./resources/subsidies.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Subsidies</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-header">SUPPORT</li>
+
+                        <li class="nav-item">
+                            <a href="./support/help.html" class="nav-link">
+                                <i class="nav-icon bi bi-question-circle-fill"></i>
+                                <p>Help Center</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="./support/contact.html" class="nav-link">
+                                <i class="nav-icon bi bi-headset"></i>
+                                <p>Contact Advisor</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="./support/feedback.html" class="nav-link">
+                                <i class="nav-icon bi bi-chat-square-text-fill"></i>
+                                <p>Feedback</p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!--end::Sidebar-->
+
+        <!--begin::App Main-->
+        <main class="app-main">
+            <!--begin::App Content Header-->
+            <div class="app-content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3 class="mb-0">Farmer Dashboard</h3>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-end">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-content">
+                <div class="container-fluid">
+                    <!-- Alerts Section -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Weather Alert!</strong> Heavy rains expected in your region tomorrow. Consider adjusting your harvest schedule.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>New Contract Offer!</strong> You have a new purchase offer from Golden Oil Co. for your next harvest.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="row">
+                        <!-- Total Farms Card -->
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="bg-primary bg-opacity-10 p-3 rounded">
+                                            <i class="bi bi-tree-fill fs-3 text-primary"></i>
+                                        </div>
+                                        <div class="text-end">
+                                            <h3 class="mb-0">4</h3>
+                                            <p class="text-secondary mb-0">Total Farms</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View Farms</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Contracts Card -->
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="bg-success bg-opacity-10 p-3 rounded">
+                                            <i class="bi bi-file-earmark-text-fill fs-3 text-success"></i>
+                                        </div>
+                                        <div class="text-end">
+                                            <h3 class="mb-0">2</h3>
+                                            <p class="text-secondary mb-0">Active Contracts</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a href="#" class="btn btn-sm btn-outline-success">View Contracts</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upcoming Harvests Card -->
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="bg-warning bg-opacity-10 p-3 rounded">
+                                            <i class="bi bi-calendar-check-fill fs-3 text-warning"></i>
+                                        </div>
+                                        <div class="text-end">
+                                            <h3 class="mb-0">3</h3>
+                                            <p class="text-secondary mb-0">Upcoming Harvests</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a href="#" class="btn btn-sm btn-outline-warning">Schedule</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Expected Payments Card -->
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="bg-info bg-opacity-10 p-3 rounded">
+                                            <i class="bi bi-cash-coin fs-3 text-info"></i>
+                                        </div>
+                                        <div class="text-end">
+                                            <h3 class="mb-0">$12,450</h3>
+                                            <p class="text-secondary mb-0">Expected Payments</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a href="#" class="btn btn-sm btn-outline-info">View Payments</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content Row -->
+                    <div class="row mt-4">
+                        <!-- Left Column -->
+                        <div class="col-lg-8">
+                            <!-- Production Chart -->
+                            <div class="card mb-4">
+                                <div class="card-header border-0">
+                                    <div class="d-flex justify-content-between">
+                                        <h3 class="card-title">Annual Production Forecast</h3>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">Oil Palm</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">Sunflower</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">Soybean</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="position-relative mb-4">
+                                        <div id="production-chart" style="height: 300px;"></div>
+                                    </div>
+                                    <div class="d-flex flex-row justify-content-end">
+                                        <span class="me-2">
+                        <i class="bi bi-square-fill text-primary"></i> 2024 Forecast
+                      </span>
+                                        <span>
+                        <i class="bi bi-square-fill text-secondary"></i> 2023 Actual
+                      </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Upcoming Harvests -->
+                            <div class="card mb-4">
+                                <div class="card-header border-0">
+                                    <h3 class="card-title">Upcoming Harvests</h3>
+                                    <div class="card-tools">
+                                        <a href="#" class="btn btn-tool btn-sm"> <i class="bi bi-plus"></i> Add </a>
+                                    </div>
+                                </div>
+                                <div class="card-body table-responsive p-0">
+                                    <table class="table table-striped align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Crop</th>
+                                                <th>Farm</th>
+                                                <th>Expected Date</th>
+                                                <th>Progress</th>
+                                                <th>Contract</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="crop-icon bg-success text-white">
+                                                            <i class="bi bi-tree-fill"></i>
+                                                        </div>
+                                                        <span>Oil Palm</span>
+                                                    </div>
+                                                </td>
+                                                <td>North Plantation</td>
+                                                <td>May 15, 2024</td>
+                                                <td>
+                                                    <div class="progress harvest-progress">
+                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="badge text-bg-primary">Golden Oil Co.</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="crop-icon bg-warning text-white">
+                                                            <i class="bi bi-flower1"></i>
+                                                        </div>
+                                                        <span>Sunflower</span>
+                                                    </div>
+                                                </td>
+                                                <td>West Field</td>
+                                                <td>June 2, 2024</td>
+                                                <td>
+                                                    <div class="progress harvest-progress">
+                                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="badge text-bg-secondary">No contract</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="crop-icon bg-info text-white">
+                                                            <i class="bi bi-egg-fill"></i>
+                                                        </div>
+                                                        <span>Soybean</span>
+                                                    </div>
+                                                </td>
+                                                <td>South Field</td>
+                                                <td>July 10, 2024</td>
+                                                <td>
+                                                    <div class="progress harvest-progress">
+                                                        <div class="progress-bar bg-info" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="badge text-bg-primary">AgriPro</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="crop-icon bg-danger text-white">
+                                                            <i class="bi bi-tree-fill"></i>
+                                                        </div>
+                                                        <span>Oil Palm</span>
+                                                    </div>
+                                                </td>
+                                                <td>East Plantation</td>
+                                                <td>August 5, 2024</td>
+                                                <td>
+                                                    <div class="progress harvest-progress">
+                                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="badge text-bg-secondary">No contract</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-lg-4">
+                            <!-- Weather Card -->
+                            <div class="card weather-card mb-4">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <h5 class="card-title text-white mb-1">Weather Forecast</h5>
+                                            <p class="text-white-50 mb-0">North Plantation</p>
+                                        </div>
+                                        <div class="text-end">
+                                            <h2 class="text-white mb-0">28°C</h2>
+                                            <p class="text-white-50 mb-0">Partly Cloudy</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row text-center">
+                                        <div class="col">
+                                            <p class="text-white mb-1">Today</p>
+                                            <i class="bi bi-cloud-sun-fill text-white fs-4"></i>
+                                            <p class="text-white mb-0">28° / 22°</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="text-white mb-1">Tomorrow</p>
+                                            <i class="bi bi-cloud-rain-heavy-fill text-white fs-4"></i>
+                                            <p class="text-white mb-0">25° / 21°</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="text-white mb-1">Wed</p>
+                                            <i class="bi bi-cloud-fill text-white fs-4"></i>
+                                            <p class="text-white mb-0">26° / 20°</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <a href="#" class="btn btn-sm btn-light">View Full Forecast</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Soil Health Card -->
+                            <div class="card soil-card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title text-white">Soil Health</h5>
+                                    <p class="text-white-50">North Plantation - Oil Palm</p>
+
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span class="text-white">Nitrogen</span>
+                                            <span class="text-white">78%</span>
+                                        </div>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 78%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span class="text-white">Phosphorus</span>
+                                            <span class="text-white">65%</span>
+                                        </div>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span class="text-white">Potassium</span>
+                                            <span class="text-white">82%</span>
+                                        </div>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 82%" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <a href="#" class="btn btn-sm btn-light">View All Farms</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Market Prices Card -->
+                            <div class="card market-card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title text-white">Market Prices</h5>
+                                    <p class="text-white-50">Current rates per metric ton</p>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-borderless text-white mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Crop</th>
+                                                    <th>Price</th>
+                                                    <th>Trend</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Oil Palm</td>
+                                                    <td>$850</td>
+                                                    <td><i class="bi bi-graph-up-arrow text-success"></i> 2.5%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Sunflower</td>
+                                                    <td>$1,200</td>
+                                                    <td><i class="bi bi-graph-up-arrow text-success"></i> 1.8%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Soybean</td>
+                                                    <td>$780</td>
+                                                    <td><i class="bi bi-graph-down-arrow text-danger"></i> 0.5%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Canola</td>
+                                                    <td>$920</td>
+                                                    <td><i class="bi bi-dash-lg text-secondary"></i> 0.0%</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <a href="#" class="btn btn-sm btn-light">View Price History</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recent Payments Card -->
+                            <div class="card payment-card">
+                                <div class="card-body">
+                                    <h5 class="card-title text-white">Recent Payments</h5>
+
+                                    <div class="list-group list-group-flush">
+                                        <div class="list-group-item bg-transparent text-white border-secondary">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h6 class="mb-1">March Harvest</h6>
+                                                    <small class="text-white-50">April 5, 2024</small>
+                                                </div>
+                                                <div class="text-end">
+                                                    <strong>$8,450</strong>
+                                                    <div class="text-success">
+                                                        <small><i class="bi bi-check-circle-fill"></i> Completed</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item bg-transparent text-white border-secondary">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h6 class="mb-1">February Harvest</h6>
+                                                    <small class="text-white-50">March 3, 2024</small>
+                                                </div>
+                                                <div class="text-end">
+                                                    <strong>$7,890</strong>
+                                                    <div class="text-success">
+                                                        <small><i class="bi bi-check-circle-fill"></i> Completed</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="list-group-item bg-transparent text-white border-secondary">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h6 class="mb-1">January Harvest</h6>
+                                                    <small class="text-white-50">February 1, 2024</small>
+                                                </div>
+                                                <div class="text-end">
+                                                    <strong>$6,750</strong>
+                                                    <div class="text-success">
+                                                        <small><i class="bi bi-check-circle-fill"></i> Completed</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <a href="#" class="btn btn-sm btn-light">View All Payments</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!--end::App Main-->
+
+        <!--begin::Footer-->
+        <footer class="app-footer">
+            <div class="float-end d-none d-sm-inline">Cooking Oil Supply System</div>
+            <strong>
+          Copyright &copy; 2024&nbsp;
+          <a href="#" class="text-decoration-none">Oil Farmer Network</a>.
+        </strong> All rights reserved.
+        </footer>
+        <!--end::Footer-->
+    </div>
+    <!--end::App Wrapper-->
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/browser/overlayscrollbars.browser.es6.min.js" integrity="sha256-dghWARbRe2eLlIJ56wNB+b760ywulqK3DzZYEpsg2fQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="../../dist/js/adminlte.js"></script>
+
+    <!-- Apex Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js" integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8=" crossorigin="anonymous"></script>
+
+    <script>
+        // OverlayScrollbars Configuration
+        const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
+        const Default = {
+            scrollbarTheme: 'os-theme-light',
+            scrollbarAutoHide: 'leave',
+            scrollbarClickScroll: true,
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+            if (sidebarWrapper && OverlayScrollbarsGlobal ? .OverlayScrollbars !== undefined) {
+                OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
+                    scrollbars: {
+                        theme: Default.scrollbarTheme,
+                        autoHide: Default.scrollbarAutoHide,
+                        clickScroll: Default.scrollbarClickScroll,
+                    },
+                });
+            }
+        });
+
+        // Production Chart
+        const production_chart_options = {
+            series: [{
+                name: '2024 Forecast',
+                data: [45, 52, 38, 24, 33, 26, 21, 20, 36, 62, 78, 84]
+            }, {
+                name: '2023 Actual',
+                data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
+            }],
+            chart: {
+                height: 300,
+                type: 'line',
+                toolbar: {
+                    show: false
+                }
+            },
+            colors: ['#0d6efd', '#6c757d'],
+            stroke: {
+                curve: 'smooth',
+                width: 3
+            },
+            grid: {
+                borderColor: '#e7e7e7',
+                row: {
+                    colors: ['#f3f3f3', 'transparent'],
+                    opacity: 0.5
+                }
+            },
+            markers: {
+                size: 5
+            },
+            xaxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            },
+            yaxis: {
+                title: {
+                    text: 'Metric Tons'
+                },
+                min: 0,
+                max: 100
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'right',
+                floating: true,
+                offsetY: -25,
+                offsetX: -5
+            }
+        };
+
+        const production_chart = new ApexCharts(
+            document.querySelector('#production-chart'),
+            production_chart_options
+        );
+        production_chart.render();
+
+        // Toggle active state for crop buttons
+        document.querySelectorAll('.btn-group .btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                this.classList.toggle('btn-outline-secondary');
+                this.classList.toggle('btn-secondary');
+
+                // Here you would typically update the chart data based on the selected crop
+                // For demo purposes, we'll just log the selection
+                console.log('Selected crop:', this.textContent.trim());
+            });
+        });
+    </script>
+</body>
+
+</html>
